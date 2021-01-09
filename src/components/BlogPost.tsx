@@ -10,7 +10,7 @@ interface Props {
 const BlogPost: React.FC<Props> = ({ children, meta }) => {
   return (
     <>
-      <HeadPost meta={meta} isBlogPost />
+      <HeadPost meta={meta} />
       <article>{children}</article>
     </>
   );

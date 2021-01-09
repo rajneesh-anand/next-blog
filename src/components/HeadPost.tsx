@@ -3,14 +3,13 @@ import { IPost } from "../types";
 
 interface Props {
   meta: IPost;
-  isBlogPost: boolean;
 }
 
-const HeadPost: React.FC<Props> = ({ meta, isBlogPost }) => (
+const HeadPost: React.FC<Props> = ({ meta }) => (
   <div>
     <h1 className="great-title">{meta.title}</h1>
     <div className="details">
-      {isBlogPost ? null : <p>{meta.description}</p>}
+      <p>{meta.description}</p>
       <span>{meta.date}</span>
       <span role="img" aria-label="one coffee">
         ☕ {meta.readTime + " min read"}

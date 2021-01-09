@@ -1,7 +1,7 @@
 import Link from "next/link";
 import HeadPost from "./HeadPost";
 
-export const Post = ({ post }) => {
+export const Post = ({ post }: any) => {
   const {
     link,
     module: { meta },
