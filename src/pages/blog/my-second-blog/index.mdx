@@ -1,13 +1,16 @@
-import BlogPost from "../../../components/BlogPost";
+import PostDetail from "../../../components/blogpost/PostDetail";
 
 export const meta = {
   title: "How To build a blog with Next JS and MDX",
   description: "Build your first blog with Next JS",
   date: "Aug 10, 2020",
   readTime: 4,
+  tags: ["Yoga", "Pranayam", "Analyst"],
 };
 
-export default ({ children }) => <BlogPost meta={meta}>{children}</BlogPost>;
+export default ({ children }) => (
+  <PostDetail meta={meta}>{children}</PostDetail>
+);
 
 ## My Headline
 

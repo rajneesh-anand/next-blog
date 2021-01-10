@@ -1,15 +1,17 @@
 import * as React from "react";
 import { NextPage } from "next";
-import Link from "next/link";
+import Layout from "../components/layout/Layout";
+import Header from "../components/header/Header";
+import MobileMenu from "../components/mobilemenu/MobileMenu";
 
-const AboutPage: NextPage = () => (
-  <>
-    <h1>Welcome to About</h1>
-    <p>Here is About Page</p>
-    <Link href="/">
-      <button>Go to Home</button>
-    </Link>
-  </>
-);
+const AboutPage: NextPage = () => {
+  return (
+    <Layout pageTitle="About" description="about blogger">
+      <Header />
+      <MobileMenu />
+      <h1>ABOUT</h1>
+    </Layout>
+  );
+};
 
 export default AboutPage;

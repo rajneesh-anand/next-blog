@@ -8,32 +8,21 @@ const NavLinks = () => {
   };
   return (
     <ul className="main-nav__navigation-box">
-      <li className="dropdown">
+      <li>
         <Link href="/">
-          <>
-            <a>Home</a>
-            <i className="fa fa-angle-down" onClick={handleDropdownStatus}></i>
-          </>
+          <a>Home</a>
         </Link>
-        <ul className="dropdown-list">
-          <li>
-            <Link href="/">
-              <a>Home One</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/index-2">
-              <a>Home Two</a>
-            </Link>
-          </li>
-        </ul>
       </li>
       <li>
         <Link href="/blog" activeClassName="active">
           <a>Blog</a>
         </Link>
       </li>
-
+      <li>
+        <Link href="/about" activeClassName="active">
+          <a>About</a>
+        </Link>
+      </li>
       <li className="dropdown">
         <Link href="/news">
           <>

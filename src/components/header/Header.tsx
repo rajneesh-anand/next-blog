@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NavLinks from "./NavLinks";
 
-import headerLogoSticky from "../../assets/img/logo2.png";
+// import headerLogoSticky from "../../assets/img/logo2.png";
 import headerLogo from "../../assets/img/logo.png";
 
 // interface IProps {
@@ -53,9 +53,7 @@ const Header: React.FC = () => {
   return (
     <header className={`header`}>
       <div
-        className={`main-header inner-header header-2 ${
-          sticky === true ? "sticky fadeInDown" : " "
-        }`}
+        className={`main-header ${sticky === true ? "sticky fadeInDown" : " "}`}
       >
         <div className="main-menu-wrap">
           <div className="container">
@@ -63,16 +61,7 @@ const Header: React.FC = () => {
               <div className="col-xl-3 col-lg-3 col-md-4 col-6">
                 <div className="logo">
                   <a href="/">
-                    <img
-                      className="main-logo2"
-                      src={headerLogo}
-                      alt="jironis"
-                    />
-                    <img
-                      className="sticky-logo"
-                      src={headerLogoSticky}
-                      alt="jironis"
-                    />
+                    <img src={headerLogo} alt="jironis" />
                   </a>
                 </div>
               </div>

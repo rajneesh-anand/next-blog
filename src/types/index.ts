@@ -3,4 +3,5 @@ export interface IPost {
   description: string;
   date: string;
   readTime: number;
+  tags: string[];
 }
