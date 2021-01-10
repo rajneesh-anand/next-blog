@@ -1,8 +1,6 @@
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import Header from "../header/Header";
-import * as React from "react";
-import GlobalStyle from "../../styles/globalStyles";
-import { Content } from "../../styles/contentStyles";
+import { Link as ScrollLink } from "react-scroll";
 
 interface IProps {
   children: React.ReactNode;
@@ -11,6 +9,22 @@ interface IProps {
 }
 
 const Layout: React.FC<IProps> = ({ children, pageTitle, description }) => {
+  const [scrollTop, setScrollTop] = useState(false);
+
+  const handleScrollTop = () => {
+    if (window.scrollY > 70) {
+      setScrollTop(true);
+    } else if (window.scrollY < 70) {
+      setScrollTop(false);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScrollTop);
+    return () => {
+      window.removeEventListener("scroll", handleScrollTop);
+    };
+  });
+
   return (
     <>
       <Head>
@@ -21,9 +35,21 @@ const Layout: React.FC<IProps> = ({ children, pageTitle, description }) => {
       </Head>
 
       <main>
-        <GlobalStyle />
-        <Header />
-        <Content>{children}</Content>
+        <div className="page-wrapper" id="wrapper">
+          {children}
+        </div>
+        {scrollTop === true ? (
+          <div className="back-to-top show" style={{ cursor: "pointer" }}>
+            <ScrollLink
+              to="wrapper"
+              smooth={true}
+              duration={500}
+              className="scroll-to-top"
+            >
+              <i className="fa fa-chevron-up"></i>
+            </ScrollLink>
+          </div>
+        ) : null}
       </main>
     </>
   );

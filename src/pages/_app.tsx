@@ -1,12 +1,14 @@
 import type { AppProps } from "next/app";
-import Layout from "../components/layout/Layout";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-modal-video/css/modal-video.min.css";
+import "../assets/css/font-awesome.min.css";
+import "swiper/swiper-bundle.min.css";
+import "../assets/css/style.css";
+import "../assets/css/responsive.css";
+import "../assets/css/custom.css";
 
 function App({ Component, pageProps }: AppProps) {
-  return (
-    <Layout pageTitle="Blog" description="My Personal Blog">
-      <Component {...pageProps} />
-    </Layout>
-  );
+  return <Component {...pageProps} />;
 }
 
 export default App;

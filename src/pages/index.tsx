@@ -1,14 +1,17 @@
-import { Post } from "../components/Post";
-import { posts } from "../getAllPosts";
+// import { Post } from "../components/Post";
+// import { posts } from "../getAllPosts";
 import { NextPage } from "next";
+import Layout from "../components/layout/Layout";
+import Header from "../components/header/Header";
+import MobileMenu from "../components/mobilemenu/MobileMenu";
 
-const IndexPage: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
-    <>
-      {posts.map((post: any) => (
-        <Post key={post.link} post={post} />
-      ))}
-    </>
+    <Layout pageTitle="Blogger" description="blogger">
+      <Header />
+      <MobileMenu />
+    </Layout>
   );
 };
-export default IndexPage;
+
+export default HomePage;
