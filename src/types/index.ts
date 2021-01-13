@@ -4,4 +4,5 @@ export interface IPost {
   date: string;
   readTime: number;
   tags: string[];
+  image: string;
 }

@@ -4,9 +4,7 @@ import Header from "../components/header/Header";
 import MobileMenu from "../components/mobilemenu/MobileMenu";
 import Banner from "../components/banner/Banner";
 import Footer from "../components/footer/Footer";
-import { Container, Row, Col } from "react-bootstrap";
-import { posts } from "../getAllPosts";
-import Post from "../components/blogpost/Post";
+import BlogHome from "../components/blog";
 
 const HomePage: NextPage = () => {
   return (
@@ -14,19 +12,7 @@ const HomePage: NextPage = () => {
       <Header />
       <MobileMenu />
       <Banner />
-      <section className="pt-120 pb-150">
-        <Container>
-          <Row>
-            <Col lg={8}>
-              <div className="blog-list-inner">
-                {posts.map((post: any) => (
-                  <Post key={post.link} post={post} />
-                ))}
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
+      <BlogHome />
       <Footer />
     </Layout>
   );

@@ -43,6 +43,11 @@ const NavLinks = () => {
           </li>
         </ul>
       </li>
+      <li>
+        <Link href="/shop" activeClassName="active">
+          <a>Shop</a>
+        </Link>
+      </li>
     </ul>
   );
 };

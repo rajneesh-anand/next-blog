@@ -6,9 +6,18 @@ import "swiper/swiper-bundle.min.css";
 import "../assets/css/style.css";
 import "../assets/css/responsive.css";
 import "../assets/css/custom.css";
+import "reflect-metadata";
+import { AuthProvider } from "../contexts/auth/auth.provider";
+import { IntlProvider } from "react-intl";
 
 function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <AuthProvider>
+      <IntlProvider locale="en" defaultLocale="en">
+        <Component {...pageProps} />
+      </IntlProvider>
+    </AuthProvider>
+  );
 }
 
 export default App;

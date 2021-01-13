@@ -10,7 +10,7 @@ module.exports = withPlugins([
   [
     withMDX,
     {
-      pageExtensions: ["mdx", "tsx"],
+      pageExtensions: ["mdx", "tsx", "ts"],
     },
   ],
   [withImages],

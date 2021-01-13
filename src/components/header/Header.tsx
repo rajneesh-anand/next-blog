@@ -1,15 +1,38 @@
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+const AuthMenu = dynamic(() => import("../auth/auth-menu"), { ssr: false });
+
 import NavLinks from "./NavLinks";
+// import AuthMenu from "../auth/auth-menu";
+import Router from "next/router";
+import { AuthContext } from "../../contexts/auth/auth.context";
+// import { Modal } from "../modal/modal";
+// import { useModal } from "../modal/useModal";
 
-// import headerLogoSticky from "../../assets/img/logo2.png";
+// import SignInForm from "../../features/authentication-form/login";
 import headerLogo from "../../assets/img/logo.png";
-
-// interface IProps {
-//   extraClassName: string;
-// }
 
 const Header: React.FC = () => {
   const [sticky, setSticky] = useState(false);
+
+  const {
+    authState: { isAuthenticated },
+    authDispatch,
+  } = React.useContext<any>(AuthContext);
+
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("access_token");
+      authDispatch({ type: "SIGN_OUT" });
+      Router.push("/");
+    }
+  };
+
+  const handleJoin = () => {
+    authDispatch({
+      type: "SIGNIN",
+    });
+  };
 
   const handleScroll = () => {
     if (window.scrollY > 70) {
@@ -84,9 +107,15 @@ const Header: React.FC = () => {
               </div>
               <div className="col-lg-3 col-md-4 col-sm-5 d-md-block d-none">
                 <div className="urgent-call text-right">
-                  <a href="#" className="btn">
+                  {/* <a className="btn">
                     Get Jironis
-                  </a>
+                  </a> */}
+                  <AuthMenu
+                    isAuthenticated={isAuthenticated}
+                    onJoin={handleJoin}
+                    onLogout={handleLogout}
+                    avatar={headerLogo}
+                  />
                 </div>
               </div>
             </div>
