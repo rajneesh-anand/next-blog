@@ -1,4 +1,8 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useCurrentUser } from "../../hooks/index";
+const isBrowser = typeof window !== "undefined";
 import {
   LinkButton,
   Button,
@@ -15,13 +19,31 @@ import { Facebook } from "../../assets/icons/Facebook";
 import { Google } from "../../assets/icons/Google";
 import { AuthContext } from "../../contexts/auth/auth.context";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Input } from "../../components/forms/input";
+// import { Input } from "../../components/forms/input";
 
-export default function SignInModal() {
-  const intl = useIntl();
+const Login = () => {
+  // const intl = useIntl();
   const { authDispatch } = useContext<any>(AuthContext);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+
+  const router = useRouter();
+  const [errorMsg, setErrorMsg] = useState("");
+  const [user, { mutate }] = useCurrentUser();
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+  useEffect(() => {
+    // redirect to home if user is authenticated
+    if (user) router.push("/");
+  }, [user]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+  };
 
   const toggleSignUpForm = () => {
     authDispatch({
@@ -35,63 +57,59 @@ export default function SignInModal() {
     });
   };
 
-  const loginCallback = () => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("access_token", `${email}.${password}`);
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const body = {
+      email: data.email,
+      password: data.password,
+    };
+    const res = await fetch("/api/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (res.status === 200) {
+      const userObj = await res.json();
+      if (isBrowser) {
+        localStorage.setItem("session_user", JSON.stringify(userObj.user));
+      }
+      console.log(userObj);
+      mutate(userObj);
       authDispatch({ type: "SIGNIN_SUCCESS" });
+    } else {
+      setErrorMsg("Incorrect username or password. Try again!");
     }
-  };
+  }
 
   return (
     <Wrapper>
       <Container>
         <div>
-          <Heading>
-            <FormattedMessage id="welcomeBack" defaultMessage="Welcome Back" />
-          </Heading>
-          <SubHeading>
-            <FormattedMessage
-              id="loginText"
-              defaultMessage="Login with your email &amp; password"
-            />
-          </SubHeading>
-          <form onSubmit={loginCallback}>
-            <Input
-              type="email"
-              placeholder={intl.formatMessage({
-                id: "emailAddressPlaceholder",
-                defaultMessage: "Email Address.",
-              })}
-              value={email}
-              onChange={(e: any) => setEmail(e.target.value)}
-              required
-              height="48px"
-              backgroundColor="#F7F7F7"
-              mb="10px"
-            />
-
-            <Input
-              type="password"
-              placeholder={intl.formatMessage({
-                id: "passwordPlaceholder",
-                defaultMessage: "Password (min 6 characters)",
-              })}
-              value={password}
-              onChange={(e: any) => setPassword(e.target.value)}
-              required
-              height="48px"
-              backgroundColor="#F7F7F7"
-              mb="10px"
-            />
-
-            <Button
-              variant="primary"
-              size="big"
-              style={{ width: "100%" }}
-              type="submit"
-            >
-              <FormattedMessage id="continueBtn" defaultMessage="Continue" />
-            </Button>
+          <h2>Sign in</h2>
+          <form onSubmit={onSubmit}>
+            {errorMsg ? <p style={{ color: "red" }}>{errorMsg}</p> : null}
+            <label htmlFor="email">
+              <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Email address"
+                onChange={handleChange}
+              />
+            </label>
+            <label htmlFor="password">
+              <input
+                id="password"
+                type="password"
+                name="password"
+                placeholder="Password"
+                onChange={handleChange}
+              />
+            </label>
+            <button type="submit">Sign in</button>
+            <Link href="/forget-password">
+              <a>Forget password</a>
+            </Link>
           </form>
         </div>
 
@@ -104,7 +122,6 @@ export default function SignInModal() {
               backgroundColor: "#4267b2",
               marginBottom: 10,
             }}
-            onClick={loginCallback}
           >
             <IconWrapper>
               <Facebook />
@@ -119,7 +136,6 @@ export default function SignInModal() {
             variant="primary"
             size="big"
             style={{ width: "100%", backgroundColor: "#4285f4" }}
-            onClick={loginCallback}
           >
             <IconWrapper>
               <Google />
@@ -155,4 +171,6 @@ export default function SignInModal() {
       </OfferSection>
     </Wrapper>
   );
-}
+};
+
+export default Login;

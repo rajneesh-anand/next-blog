@@ -14,15 +14,27 @@ import headerLogo from "../../assets/img/logo.png";
 
 const Header: React.FC = () => {
   const [sticky, setSticky] = useState(false);
-
+  var user = null;
+  var objName: any = {};
   const {
     authState: { isAuthenticated },
     authDispatch,
   } = React.useContext<any>(AuthContext);
 
+  if (typeof window !== "undefined") {
+    user =
+      localStorage.getItem("session_user") != null
+        ? localStorage.getItem("session_user")
+        : null;
+  }
+
+  if (user != null) {
+    objName = JSON.parse(user);
+  }
+  console.log(objName.name);
   const handleLogout = () => {
     if (typeof window !== "undefined") {
-      localStorage.removeItem("access_token");
+      localStorage.removeItem("session_user");
       authDispatch({ type: "SIGN_OUT" });
       Router.push("/");
     }
@@ -107,14 +119,12 @@ const Header: React.FC = () => {
               </div>
               <div className="col-lg-3 col-md-4 col-sm-5 d-md-block d-none">
                 <div className="urgent-call text-right">
-                  {/* <a className="btn">
-                    Get Jironis
-                  </a> */}
                   <AuthMenu
                     isAuthenticated={isAuthenticated}
                     onJoin={handleJoin}
                     onLogout={handleLogout}
                     avatar={headerLogo}
+                    user={objName.name}
                   />
                 </div>
               </div>

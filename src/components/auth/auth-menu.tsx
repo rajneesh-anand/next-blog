@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { Modal } from "../modal/modal";
 import { useModal } from "../modal/useModal";
-import AuthenticationForm from "../../features/authentication-form";
+import AuthenticationForm from "../authforms";
 import Popover from "../../components/popover/popover";
 import { AuthorizedMenu } from "./authorized-menu";
 
@@ -11,9 +11,16 @@ interface Props {
   onJoin: () => void;
   onLogout: () => void;
   avatar: string;
+  user: string;
 }
 
-const AuthMenu = ({ isAuthenticated, onJoin, onLogout, avatar }: Props) => {
+const AuthMenu = ({
+  isAuthenticated,
+  onJoin,
+  onLogout,
+  avatar,
+  user,
+}: Props) => {
   const { isShown, toggle } = useModal();
 
   return !isAuthenticated ? (
@@ -30,7 +37,7 @@ const AuthMenu = ({ isAuthenticated, onJoin, onLogout, avatar }: Props) => {
     <Popover
       direction="right"
       className="user-pages-dropdown"
-      handler={<img src={avatar} alt="user" />}
+      handler={user}
       content={<AuthorizedMenu onLogout={onLogout} />}
     />
   );

@@ -6,7 +6,6 @@ import "swiper/swiper-bundle.min.css";
 import "../assets/css/style.css";
 import "../assets/css/responsive.css";
 import "../assets/css/custom.css";
-import "reflect-metadata";
 import { AuthProvider } from "../contexts/auth/auth.provider";
 import { IntlProvider } from "react-intl";
 
