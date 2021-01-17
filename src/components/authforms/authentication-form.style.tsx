@@ -14,10 +14,10 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
-  padding: 40px 60px 0;
+  padding: 10px 10px 0;
   display: flex;
   @media (max-width: 768px) {
-    padding: 40px 30px 0;
+    padding: 10px 10px 0;
   }
 `;
 
@@ -46,7 +46,7 @@ export const SubHeading = styled.span`
 `;
 
 export const OfferSection = styled.div`
-  padding: 20px;
+  padding: 8px;
   background-color: ${themeGet("colors.gray.200", "#F7F7F7")};
   color: ${themeGet("colors.primary.regular", "#009e7f")};
   display: flex;

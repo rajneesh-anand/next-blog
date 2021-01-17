@@ -46,8 +46,8 @@ export const CloseButton = styled.button`
   }
 `;
 export const Content = styled.div`
-  padding: 10px;
-  height: 400px;
+  padding: 20px;
+  height: 450px;
   overflow-x: hidden;
   overflow-y: auto;
 `;

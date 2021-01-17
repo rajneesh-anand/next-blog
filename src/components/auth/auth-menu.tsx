@@ -29,7 +29,7 @@ const AuthMenu = ({
       <Modal
         isShown={isShown}
         hide={toggle}
-        headerText="Login"
+        headerText="BLOGGER"
         modalContent={<AuthenticationForm />}
       />
     </div>

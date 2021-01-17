@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCurrentUser } from "../../hooks/index";
 const isBrowser = typeof window !== "undefined";
@@ -9,8 +8,6 @@ import {
   IconWrapper,
   Wrapper,
   Container,
-  Heading,
-  SubHeading,
   OfferSection,
   Offer,
 } from "./authentication-form.style";
@@ -19,10 +16,10 @@ import { Facebook } from "../../assets/icons/Facebook";
 import { Google } from "../../assets/icons/Google";
 import { AuthContext } from "../../contexts/auth/auth.context";
 import { FormattedMessage, useIntl } from "react-intl";
-// import { Input } from "../../components/forms/input";
+import { Input } from "../../components/forms/input";
 
 const Login = () => {
-  // const intl = useIntl();
+  const intl = useIntl();
   const { authDispatch } = useContext<any>(AuthContext);
 
   const router = useRouter();
@@ -73,7 +70,6 @@ const Login = () => {
       if (isBrowser) {
         localStorage.setItem("session_user", JSON.stringify(userObj.user));
       }
-      console.log(userObj);
       mutate(userObj);
       authDispatch({ type: "SIGNIN_SUCCESS" });
     } else {
@@ -85,90 +81,112 @@ const Login = () => {
     <Wrapper>
       <Container>
         <div>
-          <h2>Sign in</h2>
+          <h6>Sign In</h6>
           <form onSubmit={onSubmit}>
             {errorMsg ? <p style={{ color: "red" }}>{errorMsg}</p> : null}
-            <label htmlFor="email">
-              <input
-                id="email"
-                type="email"
-                name="email"
-                placeholder="Email address"
-                onChange={handleChange}
-              />
-            </label>
-            <label htmlFor="password">
-              <input
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={handleChange}
-              />
-            </label>
-            <button type="submit">Sign in</button>
-            <Link href="/forget-password">
-              <a>Forget password</a>
-            </Link>
+            <Input
+              id="email"
+              type="email"
+              name="email"
+              onChange={handleChange}
+              placeholder={intl.formatMessage({
+                id: "emailAddressPlaceholder",
+                defaultMessage: "Email Address.",
+              })}
+              value={data.email}
+              required
+              height="48px"
+              backgroundColor="#F7F7F7"
+              mb="10px"
+            />
+
+            <Input
+              id="password"
+              type="password"
+              name="password"
+              placeholder={intl.formatMessage({
+                id: "passwordPlaceholder",
+                defaultMessage: "Password (min 6 characters)",
+              })}
+              value={data.password}
+              required
+              height="48px"
+              backgroundColor="#F7F7F7"
+              mb="10px"
+              onChange={handleChange}
+            />
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                variant="primary"
+                type="submit"
+                style={{ paddingLeft: 30, paddingRight: 30 }}
+              >
+                <FormattedMessage id="continueBtn" defaultMessage="Login" />
+              </Button>
+            </div>
           </form>
-        </div>
+          <OfferSection>
+            <Offer>
+              <FormattedMessage
+                id="dontHaveAccount"
+                defaultMessage="Don't have any account? "
+              />
+              <LinkButton onClick={toggleSignUpForm}>
+                <FormattedMessage id="signUpBtnText" defaultMessage="Sign Up" />
+              </LinkButton>
+            </Offer>
+            <Offer>
+              <FormattedMessage
+                id="forgotPasswordText"
+                defaultMessage="Forgot your password?"
+              />
+              <LinkButton onClick={toggleForgotPassForm}>
+                <FormattedMessage id="resetText" defaultMessage="Reset It" />
+              </LinkButton>
+            </Offer>
+          </OfferSection>
+          {/* 
+          <Divider>
+            <span>
+              <FormattedMessage id="orText" defaultMessage="or" />
+            </span>
+          </Divider> */}
 
-        <div>
-          <Button
-            variant="primary"
-            size="big"
-            style={{
-              width: "100%",
-              backgroundColor: "#4267b2",
-              marginBottom: 10,
-            }}
-          >
-            <IconWrapper>
-              <Facebook />
-            </IconWrapper>
-            <FormattedMessage
-              id="continueFacebookBtn"
-              defaultMessage="Continue with Facebook"
-            />
-          </Button>
-
-          <Button
-            variant="primary"
-            size="big"
-            style={{ width: "100%", backgroundColor: "#4285f4" }}
-          >
-            <IconWrapper>
-              <Google />
-            </IconWrapper>
-            <FormattedMessage
-              id="continueGoogleBtn"
-              defaultMessage="Continue with Google"
-            />
-          </Button>
-
-          <Offer style={{ padding: "20px 0" }}>
-            <FormattedMessage
-              id="dontHaveAccount"
-              defaultMessage="Don't have any account?"
-            />
-            <LinkButton onClick={toggleSignUpForm}>
-              <FormattedMessage id="signUpBtnText" defaultMessage="Sign Up" />
-            </LinkButton>
-          </Offer>
+          <div style={{ display: "flex" }}>
+            <div>
+              <Button
+                variant="primary"
+                style={{
+                  width: "100%",
+                  backgroundColor: "#4267b2",
+                }}
+              >
+                <IconWrapper>
+                  <Facebook />
+                </IconWrapper>
+                <FormattedMessage
+                  id="continueFacebookBtn"
+                  defaultMessage="Continue with Facebook"
+                />
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant="primary"
+                style={{ width: "100%", backgroundColor: "#4285f4" }}
+              >
+                <IconWrapper>
+                  <Google />
+                </IconWrapper>
+                <FormattedMessage
+                  id="continueGoogleBtn"
+                  defaultMessage="Continue with Google"
+                />
+              </Button>
+            </div>
+          </div>
         </div>
       </Container>
-
-      <OfferSection>
-        <Offer>
-          <FormattedMessage
-            id="forgotPasswordText"
-            defaultMessage="Forgot your password?"
-          />
-          <LinkButton onClick={toggleForgotPassForm}>
-            <FormattedMessage id="resetText" defaultMessage="Reset It" />
-          </LinkButton>
-        </Offer>
-      </OfferSection>
     </Wrapper>
   );
 };

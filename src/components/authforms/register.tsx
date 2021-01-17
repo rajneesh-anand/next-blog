@@ -1,25 +1,27 @@
 import React, { useContext, useState, useEffect } from "react";
 import Router from "next/router";
 import { useCurrentUser } from "../../hooks/index";
+import Link from "next/link";
+const isBrowser = typeof window !== "undefined";
 
 import {
   Button,
   IconWrapper,
   Wrapper,
   Container,
-  Heading,
-  SubHeading,
-  HelperText,
   Offer,
   LinkButton,
+  HelperText,
 } from "./authentication-form.style";
 
 import { Facebook } from "../../assets/icons/Facebook";
 import { Google } from "../../assets/icons/Google";
 import { AuthContext } from "../../contexts/auth/auth.context";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+import { Input } from "../../components/forms/input";
 
 const Register = () => {
+  const intl = useIntl();
   const [user, { mutate }] = useCurrentUser();
   const { authDispatch } = useContext<any>(AuthContext);
   const [data, setData] = useState({
@@ -30,6 +32,7 @@ const Register = () => {
   });
 
   useEffect(() => {
+    console.log(user);
     if (user) Router.replace("/");
   }, [user]);
 
@@ -61,8 +64,10 @@ const Register = () => {
     });
     if (res.status === 201) {
       const userObj = await res.json();
+      if (isBrowser) {
+        localStorage.setItem("session_user", JSON.stringify(userObj.user));
+      }
       mutate(userObj);
-      console.log(userObj);
     } else {
       setData({ ...data, error: await res.text() });
     }
@@ -72,72 +77,120 @@ const Register = () => {
     <Wrapper>
       <Container>
         <div>
-          <h2>Sign up</h2>
+          <h6>Sign Up</h6>
           <form onSubmit={handleSubmit}>
             {data.error ? <p style={{ color: "red" }}>{data.error}</p> : null}
-            <input
-              type="text"
+
+            <Input
               id="name"
+              type="text"
               name="name"
-              placeholder="Name"
               onChange={handleChange}
+              placeholder={intl.formatMessage({
+                id: "emailAddressPlaceholder",
+                defaultMessage: "User Name",
+              })}
+              value={data.name}
+              required
+              height="48px"
+              backgroundColor="#F7F7F7"
+              mb="10px"
             />
 
-            <input
-              type="email"
+            <Input
               id="email"
+              type="email"
               name="email"
-              placeholder=" Email"
               onChange={handleChange}
+              placeholder={intl.formatMessage({
+                id: "emailAddressPlaceholder",
+                defaultMessage: "Email Address.",
+              })}
+              value={data.email}
+              required
+              height="48px"
+              backgroundColor="#F7F7F7"
+              mb="10px"
             />
-
-            <input
-              type="password"
+            <Input
               id="password"
+              type="password"
               name="password"
-              placeholder="Password"
+              placeholder={intl.formatMessage({
+                id: "passwordPlaceholder",
+                defaultMessage: "Password (min 6 characters)",
+              })}
+              value={data.password}
+              required
+              height="48px"
+              backgroundColor="#F7F7F7"
+              mb="10px"
               onChange={handleChange}
             />
-
-            <button type="submit">sign up</button>
+            <HelperText style={{ padding: "5px 0 5px" }}>
+              <FormattedMessage
+                id="signUpText"
+                defaultMessage="By signing up, you agree to "
+              />
+              &nbsp;
+              <Link href="/termspolicy">
+                <a>
+                  <FormattedMessage
+                    id="termsConditionText"
+                    defaultMessage="Terms &amp; Conditions"
+                  />
+                </a>
+              </Link>
+            </HelperText>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                variant="primary"
+                type="submit"
+                style={{ paddingLeft: 30, paddingRight: 30 }}
+              >
+                <FormattedMessage id="continueBtn" defaultMessage="Register" />
+              </Button>
+            </div>
           </form>
-        </div>
-        <div>
-          <Button
-            variant="primary"
-            size="big"
-            style={{
-              width: "100%",
-              backgroundColor: "#4267b2",
-              marginBottom: 10,
-            }}
-          >
-            <IconWrapper>
-              <Facebook />
-            </IconWrapper>
-            <FormattedMessage
-              id="continueFacebookBtn"
-              defaultMessage="Continue with Facebook"
-            />
-          </Button>
-          <Button
-            variant="primary"
-            size="big"
-            style={{ width: "100%", backgroundColor: "#4285f4" }}
-          >
-            <IconWrapper>
-              <Google />
-            </IconWrapper>
-            <FormattedMessage
-              id="continueGoogleBtn"
-              defaultMessage="Continue with Google"
-            />
-          </Button>
-          <Offer style={{ padding: "20px 0" }}>
+          {/* <div style={{ display: "flex" }}>
+            <div>
+              <Button
+                variant="primary"
+                style={{
+                  width: "100%",
+                  backgroundColor: "#4267b2",
+                }}
+              >
+                <IconWrapper>
+                  <Facebook />
+                </IconWrapper>
+                <FormattedMessage
+                  id="continueFacebookBtn"
+                  defaultMessage="Continue with Facebook"
+                />
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant="primary"
+                style={{ width: "100%", backgroundColor: "#4285f4" }}
+              >
+                <IconWrapper>
+                  <Google />
+                </IconWrapper>
+                <FormattedMessage
+                  id="continueGoogleBtn"
+                  defaultMessage="Continue with Google"
+                />
+              </Button>
+            </div>
+          </div> */}
+
+          <Offer style={{ padding: "8px 0" }}>
             <FormattedMessage
               id="alreadyHaveAccount"
-              defaultMessage="Already have an account?"
-            />{" "}
+              defaultMessage="Already have an account ?  "
+            />
             <LinkButton onClick={toggleSignInForm}>
               <FormattedMessage id="loginBtnText" defaultMessage="Login" />
             </LinkButton>
